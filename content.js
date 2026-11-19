@@ -1,16 +1,16 @@
-// KJU Dark v2 - proper dark theme for KJUsys and KJLMS
-// No global invert. KJUsys login is a split screen: left panel is
+// EvarTheme Shifter v2 - proper dark theme for college portal and college LMS
+// No global invert. college portal login is a split screen: left panel is
 // already dark navy, right panel is white. Inverting the whole page
 // would flip the dark panel light. So v2 does two things:
 //  1. dark.css handles known elements (body, text, links, inputs, tables)
 //  2. this script fixes inline / computed white backgrounds at runtime,
-//     which is needed because KJUsys is an Angular SPA and its class
+//     which is needed because college portal is an Angular SPA and its class
 //     names are not stable or inspectable from outside.
 
 const THEMES = {
-  dark: 'kju-dark',
-  oled: 'kju-dark-oled',
-  dim: 'kju-dark-dim'
+  dark: 'evar-dark',
+  oled: 'evar-dark-oled',
+  dim: 'evar-dark-dim'
 };
 
 const THEME_BG = {
@@ -82,7 +82,7 @@ function applySettings(settings) {
   const theme = THEMES[settings.theme] || THEMES.dark;
   root.classList.add(theme);
   const brightness = (settings.brightness ?? 100) / 100;
-  root.style.setProperty('--kju-brightness', String(brightness));
+  root.style.setProperty('--evar-brightness', String(brightness));
   // Brightness is applied via the theme class filter only in invert
   // fallback mode, not in proper mode, so the page never washes out.
   scheduleFix();
@@ -101,7 +101,7 @@ chrome.storage.onChanged.addListener((changes, area) => {
   if (area === 'sync') load();
 });
 
-// KJUsys is an Angular SPA: routes and content change without a reload.
+// college portal is an Angular SPA: routes and content change without a reload.
 const observer = new MutationObserver(() => {
   scheduleFix();
 });

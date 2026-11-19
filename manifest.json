@@ -1,1 +1,46 @@
-{"action":{"default_icon":{"128":"icons/icon128.png","16":"icons/icon16.png","48":"icons/icon48.png"},"default_popup":"popup.html","default_title":"KJU Dark"},"content_scripts":[{"css":["dark.css"],"js":["content.js"],"matches":["*://*.kristujayanti.edu.in/*","*://kristujayanti.edu.in/*","*://*.kristujayantiexamlms.com/*","*://kristujayantiexamlms.com/*"],"run_at":"document_start"}],"description":"Custom dark mode for Kristu Jayanti KJUsys and KJLMS (Moodle). Proper per-element dark theme, no global invert. Dark, Dim and OLED themes, brightness control, images and videos kept normal.","host_permissions":["*://*.kristujayanti.edu.in/*","*://kristujayanti.edu.in/*","*://*.kristujayantiexamlms.com/*","*://kristujayantiexamlms.com/*"],"icons":{"128":"icons/icon128.png","16":"icons/icon16.png","48":"icons/icon48.png"},"manifest_version":3,"name":"KJU Dark - KJUsys and KJLMS","permissions":["storage"],"version":"1.2.0"}
+{
+  "action": {
+    "default_icon": {
+      "128": "icons/icon128.png",
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png"
+    },
+    "default_popup": "popup.html",
+    "default_title": "EvarTheme Shifter"
+  },
+  "content_scripts": [
+    {
+      "css": [
+        "dark.css"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "matches": [
+        "*://*.kristujayanti.edu.in/*",
+        "*://kristujayanti.edu.in/*",
+        "*://*.kristujayantiexamlms.com/*",
+        "*://kristujayantiexamlms.com/*"
+      ],
+      "run_at": "document_start"
+    }
+  ],
+  "description": "Custom dark mode for your college portal and LMS. Proper per-element dark theme, no global invert. Dark, Dim and OLED themes, brightness control, images and videos kept normal.",
+  "host_permissions": [
+    "*://*.kristujayanti.edu.in/*",
+    "*://kristujayanti.edu.in/*",
+    "*://*.kristujayantiexamlms.com/*",
+    "*://kristujayantiexamlms.com/*"
+  ],
+  "icons": {
+    "128": "icons/icon128.png",
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png"
+  },
+  "manifest_version": 3,
+  "name": "EvarTheme Shifter",
+  "permissions": [
+    "storage"
+  ],
+  "version": "1.3.0"
+}
