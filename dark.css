@@ -156,6 +156,20 @@ html.evar-dark-dim, html.evar-dark-dim body {
   background: #1a1a1a !important;
 }
 
+/* Sidebar icons: font glyphs and inline SVG, not <img>. Their colour
+   is dark on a dark sidebar, so force them light. Photos are not icons. */
+html.evar-dark [class*="sidebar"] i, html.evar-dark [class*="sidebar"] svg,
+html.evar-dark [class*="sidebar"] svg path, html.evar-dark [class*="nav"] svg,
+html.evar-dark [class*="nav"] svg path,
+html.evar-dark-oled [class*="sidebar"] i, html.evar-dark-oled [class*="sidebar"] svg,
+html.evar-dark-oled [class*="sidebar"] svg path,
+html.evar-dark-dim [class*="sidebar"] i, html.evar-dark-dim [class*="sidebar"] svg,
+html.evar-dark-dim [class*="sidebar"] svg path {
+  color: #e8e4dc !important;
+  fill: #e8e4dc !important;
+  stroke: #e8e4dc !important;
+}
+
 /* Dark SVG icons in the sidebar: black artwork on a dark sidebar.
    Invert only SVG images, so they read white. Photos are not SVG. */
 html.evar-dark img[src$=".svg"], html.evar-dark-oled img[src$=".svg"],

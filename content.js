@@ -59,14 +59,43 @@ function isSmall(el) {
     cls.includes('status') || cls.includes('tag') || cls.includes('btn');
 }
 
+function setImportant(el, prop, value) {
+  try { el.style.setProperty(prop, value, 'important'); } catch (e) { /* ignore */ }
+}
+
+function setTextImportant(el, value) {
+  setImportant(el, 'color', value);
+  // v1.4.4 fix: the date picker pill stayed pale because its text
+  // lives in a child <span> whose own colour beats the button's
+  // inline style. Fix the descendants too, not just the button.
+  try {
+    el.querySelectorAll('*').forEach((d) => {
+      if (d.tagName === 'IMG' || d.tagName === 'VIDEO' || d.tagName === 'SVG') return;
+      setImportant(d, 'color', value);
+    });
+  } catch (e) { /* ignore */ }
+}
+
 function fixColors() {
   if (currentSettings.enabled === false) return;
   const bg = THEME_BG[currentSettings.theme] || THEME_BG.dark;
-  const skip = new Set(['IMG', 'VIDEO', 'PICTURE', 'IFRAME', 'EMBED', 'OBJECT', 'CANVAS', 'SVG', 'PATH']);
+  const skip = new Set(['IMG', 'VIDEO', 'PICTURE', 'IFRAME', 'EMBED', 'OBJECT', 'CANVAS']);
   const els = document.querySelectorAll('body *');
   for (const el of els) {
     if (skip.has(el.tagName)) continue;
-    if (el.closest('img, video, picture, iframe, svg, canvas')) continue;
+    // v1.4.4 fix: inline SVG icons were skipped entirely, so the
+    // sidebar icons stayed dark-on-dark. Fix their fill and stroke
+    // from the effective background instead of skipping them.
+    if (el.tagName === 'SVG' || el.tagName === 'PATH') {
+      try {
+        const effRgb = effectiveBg(el);
+        const fill = luminance(effRgb) < 90 ? '#e8e4dc' : '#111111';
+        setImportant(el, 'fill', fill);
+        setImportant(el, 'stroke', fill);
+      } catch (e) { /* ignore */ }
+      continue;
+    }
+    if (el.closest('img, video, picture, iframe, canvas')) continue;
     try {
       const cs = getComputedStyle(el);
       // Do not cover background images, course card images stay original
@@ -78,11 +107,11 @@ function fixColors() {
       if (bgRgb && lum > 190) {
         if (isSmall(el)) {
           // Light pill / badge / button: keep the light background, dark text
-          el.style.color = '#111111';
+          setTextImportant(el, '#111111');
         } else {
           // Large light surface: darken it, light text
-          el.style.backgroundColor = bg;
-          el.style.color = '#e8e4dc';
+          setImportant(el, 'background-color', bg);
+          setTextImportant(el, '#e8e4dc');
         }
       } else if (lum < 90) {
         // Dark surface: light text. v1.4.1 fix: threshold was 70, so
@@ -90,13 +119,19 @@ function fixColors() {
         // "Payment History" (luminance 70-150) were missed and stayed
         // dark-on-dark. Anything under 150 on a dark surface is unreadable.
         if (textRgb && luminance(textRgb) < 150) {
-          el.style.color = '#e8e4dc';
+          setTextImportant(el, '#e8e4dc');
+        }
+        // Font glyph icons are text: force them light too, even if
+        // their computed colour was already light grey but dim.
+        const cls = (el.className && typeof el.className === 'string') ? el.className.toLowerCase() : '';
+        if ((el.tagName === 'I' || cls.includes('icon')) && textRgb && luminance(textRgb) < 200) {
+          setImportant(el, 'color', '#e8e4dc');
         }
       } else if (lum >= 90 && lum <= 190) {
         // Mid-tone strip, e.g. pale blue LMS strip: darken large surfaces
         if (!isSmall(el)) {
-          el.style.backgroundColor = bg;
-          el.style.color = '#e8e4dc';
+          setImportant(el, 'background-color', bg);
+          setTextImportant(el, '#e8e4dc');
         }
       }
       // v1.4.3 fix: Moodle dims restricted activities with opacity,
