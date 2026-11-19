@@ -74,6 +74,22 @@ html.evar-dark-dim table, html.evar-dark-dim th, html.evar-dark-dim td {
   border-color: #2c313a !important;
 }
 
+/* Menus and popovers, open state: dark menu, light text. This covers
+   the LMS "My courses" menu, which was left as a bright white box
+   in v1.4.1 while its header was already dark. */
+html.evar-dark [class*="menu"], html.evar-dark [class*="popover"],
+html.evar-dark-oled [class*="menu"], html.evar-dark-oled [class*="popover"],
+html.evar-dark-dim [class*="menu"], html.evar-dark-dim [class*="popover"] {
+  background: #1b1e24 !important;
+  color: #e8e4dc !important;
+  border-color: #2c313a !important;
+}
+html.evar-dark [class*="menu"] a, html.evar-dark [class*="popover"] a,
+html.evar-dark-oled [class*="menu"] a, html.evar-dark-oled [class*="popover"] a,
+html.evar-dark-dim [class*="menu"] a, html.evar-dark-dim [class*="popover"] a {
+  color: #e8e4dc !important;
+}
+
 /* Dropdown menus, open state: dark menu, light text, selected item dark */
 html.evar-dark [class*="dropdown-menu"], html.evar-dark [role="menu"],
 html.evar-dark-oled [class*="dropdown-menu"], html.evar-dark-oled [role="menu"],

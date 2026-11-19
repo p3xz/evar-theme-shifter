@@ -47,8 +47,14 @@ function effectiveBg(el) {
 
 function isSmall(el) {
   const tag = el.tagName;
-  if (tag === 'BUTTON' || tag === 'A' || tag === 'SPAN' || tag === 'SMALL' || tag === 'LABEL') return true;
   const cls = (el.className && typeof el.className === 'string') ? el.className.toLowerCase() : '';
+  // v1.4.2 fix: a menu / popover / dropdown container is NOT a small
+  // pill, even if it is an <a> or <span>. The LMS "My courses" menu
+  // was kept white because its links were treated as small elements.
+  // Menus must darken like a large surface, and their links then get
+  // light text from the dark effective background.
+  if (cls.includes('menu') || cls.includes('popover') || cls.includes('dropdown') || cls.includes('list')) return false;
+  if (tag === 'BUTTON' || tag === 'A' || tag === 'SPAN' || tag === 'SMALL' || tag === 'LABEL') return true;
   return cls.includes('pill') || cls.includes('badge') || cls.includes('chip') ||
     cls.includes('status') || cls.includes('tag') || cls.includes('btn');
 }
