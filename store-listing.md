@@ -52,3 +52,7 @@ evar-theme-shifter-v3.zip, built from this folder. manifest.json at the root of 
 
 ## After Chrome
 Firefox Add-ons (free) and Microsoft Edge Add-ons (free) use the same Manifest V3 zip, with small manifest tweaks. Do those after Chrome is live.
+
+## Firefox and Edge (after Chrome)
+- Firefox: use manifest-firefox.json instead of manifest.json. It adds browser_specific_settings.gecko.id evar-theme-shifter@p3xz.dev, strict_min_version 142.0, and data_collection_permissions required none. Do not change the gecko id after the first submission, or updates break. Code is unchanged. Package: evar-theme-shifter-firefox.zip. Publish on addons.mozilla.org, free, no registration fee.
+- Edge: same package as Chrome, no changes. Package: evar-theme-shifter-edge.zip. Publish on Microsoft Edge Add-ons via Partner Center, free, no registration fee.
