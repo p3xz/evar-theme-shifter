@@ -1,0 +1,130 @@
+/* KJU Dark v2 - proper dark theme, NOT a global invert filter.
+   Why: KJUsys login is a split screen. The left panel is ALREADY
+   dark navy with white text. A global invert would turn that panel
+   light and break it. So v2 darkens only light surfaces, element
+   by element, and leaves dark panels, photos, logos and videos alone.
+   The content script also fixes inline white backgrounds at runtime,
+   which matters because KJUsys is an Angular SPA with no stable
+   class names to target. */
+
+:root {
+  color-scheme: dark;
+}
+
+html.kju-dark,
+html.kju-dark-oled,
+html.kju-dark-dim {
+  background: #101216 !important;
+  color: #e8e4dc !important;
+}
+
+html.kju-dark body,
+html.kju-dark-oled body,
+html.kju-dark-dim body {
+  background: #101216 !important;
+  color: #e8e4dc !important;
+}
+
+/* Light surfaces: white / near-white backgrounds become dark */
+html.kju-dark div,
+html.kju-dark section,
+html.kju-dark main,
+html.kju-dark article,
+html.kju-dark header,
+html.kju-dark footer,
+html.kju-dark nav,
+html.kju-dark aside,
+html.kju-dark-oled div,
+html.kju-dark-oled section,
+html.kju-dark-oled main,
+html.kju-dark-oled article,
+html.kju-dark-oled header,
+html.kju-dark-oled footer,
+html.kju-dark-oled nav,
+html.kju-dark-oled aside,
+html.kju-dark-dim div,
+html.kju-dark-dim section,
+html.kju-dark-dim main,
+html.kju-dark-dim article,
+html.kju-dark-dim header,
+html.kju-dark-dim footer,
+html.kju-dark-dim nav,
+html.kju-dark-dim aside {
+  border-color: #2c313a !important;
+}
+
+/* Text: dark text on light surfaces becomes light */
+html.kju-dark h1, html.kju-dark h2, html.kju-dark h3, html.kju-dark h4,
+html.kju-dark h5, html.kju-dark h6, html.kju-dark p, html.kju-dark span,
+html.kju-dark label, html.kju-dark li, html.kju-dark td, html.kju-dark th,
+html.kju-dark-oled h1, html.kju-dark-oled h2, html.kju-dark-oled h3,
+html.kju-dark-oled h4, html.kju-dark-oled h5, html.kju-dark-oled h6,
+html.kju-dark-oled p, html.kju-dark-oled span, html.kju-dark-oled label,
+html.kju-dark-oled li, html.kju-dark-oled td, html.kju-dark-oled th,
+html.kju-dark-dim h1, html.kju-dark-dim h2, html.kju-dark-dim h3,
+html.kju-dark-dim h4, html.kju-dark-dim h5, html.kju-dark-dim h6,
+html.kju-dark-dim p, html.kju-dark-dim span, html.kju-dark-dim label,
+html.kju-dark-dim li, html.kju-dark-dim td, html.kju-dark-dim th {
+  color: #e8e4dc;
+}
+
+/* Links: blue link becomes readable light blue, not invisible on dark */
+html.kju-dark a, html.kju-dark-oled a, html.kju-dark-dim a {
+  color: #8ab4ff !important;
+}
+
+/* Inputs: white fields become dark fields, with a visible border */
+html.kju-dark input, html.kju-dark textarea, html.kju-dark select,
+html.kju-dark-oled input, html.kju-dark-oled textarea, html.kju-dark-oled select,
+html.kju-dark-dim input, html.kju-dark-dim textarea, html.kju-dark-dim select {
+  background: #1e2228 !important;
+  color: #f0f0f0 !important;
+  border: 1px solid #3a4048 !important;
+  color-scheme: dark;
+}
+
+html.kju-dark input::placeholder, html.kju-dark textarea::placeholder,
+html.kju-dark-oled input::placeholder, html.kju-dark-oled textarea::placeholder,
+html.kju-dark-dim input::placeholder, html.kju-dark-dim textarea::placeholder {
+  color: #8a8f98 !important;
+}
+
+/* Tables: header and rows dark, borders visible */
+html.kju-dark table, html.kju-dark th, html.kju-dark td,
+html.kju-dark-oled table, html.kju-dark-oled th, html.kju-dark-oled td,
+html.kju-dark-dim table, html.kju-dark-dim th, html.kju-dark-dim td {
+  background: #171a1f !important;
+  color: #e8e4dc !important;
+  border-color: #2c313a !important;
+}
+
+/* Cards / panels */
+html.kju-dark [class*="card"], html.kju-dark [class*="panel"],
+html.kju-dark-oled [class*="card"], html.kju-dark-oled [class*="panel"],
+html.kju-dark-dim [class*="card"], html.kju-dark-dim [class*="panel"] {
+  background: #1b1e24 !important;
+  border-color: #2c313a !important;
+  box-shadow: none !important;
+}
+
+/* Theme variants: OLED is pure black, Dim is softer */
+html.kju-dark-oled, html.kju-dark-oled body {
+  background: #000000 !important;
+}
+html.kju-dark-dim, html.kju-dark-dim body {
+  background: #1a1a1a !important;
+}
+
+/* Media: NEVER darkened, logos / photos / videos / PDFs stay original */
+html.kju-dark img, html.kju-dark video, html.kju-dark picture,
+html.kju-dark iframe, html.kju-dark embed, html.kju-dark object,
+html.kju-dark canvas, html.kju-dark svg,
+html.kju-dark-oled img, html.kju-dark-oled video, html.kju-dark-oled picture,
+html.kju-dark-oled iframe, html.kju-dark-oled embed, html.kju-dark-oled object,
+html.kju-dark-oled canvas, html.kju-dark-oled svg,
+html.kju-dark-dim img, html.kju-dark-dim video, html.kju-dark-dim picture,
+html.kju-dark-dim iframe, html.kju-dark-dim embed, html.kju-dark-dim object,
+html.kju-dark-dim canvas, html.kju-dark-dim svg {
+  filter: none !important;
+  background: transparent !important;
+}
