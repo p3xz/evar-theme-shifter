@@ -35,6 +35,12 @@ html.evar-dark-dim main, html.evar-dark-dim section, html.evar-dark-dim article 
   border-color: #2c313a !important;
 }
 
+/* Links and tab labels on a dark surface: dark blue / dark grey
+   link text is unreadable on dark, so links read light blue. */
+html.evar-dark a, html.evar-dark-oled a, html.evar-dark-dim a {
+  color: #8ab4ff !important;
+}
+
 /* Inputs: white fields become dark fields */
 html.evar-dark input, html.evar-dark textarea, html.evar-dark select,
 html.evar-dark-oled input, html.evar-dark-oled textarea, html.evar-dark-oled select,

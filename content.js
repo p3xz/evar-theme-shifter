@@ -79,8 +79,11 @@ function fixColors() {
           el.style.color = '#e8e4dc';
         }
       } else if (lum < 90) {
-        // Dark surface: light text, unless this is a small light-text element already
-        if (textRgb && luminance(textRgb) < 70) {
+        // Dark surface: light text. v1.4.1 fix: threshold was 70, so
+        // dark blue / dark grey links like "My Fees" and
+        // "Payment History" (luminance 70-150) were missed and stayed
+        // dark-on-dark. Anything under 150 on a dark surface is unreadable.
+        if (textRgb && luminance(textRgb) < 150) {
           el.style.color = '#e8e4dc';
         }
       } else if (lum >= 90 && lum <= 190) {
