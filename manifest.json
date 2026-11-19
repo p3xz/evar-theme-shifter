@@ -32,7 +32,7 @@
       "run_at": "document_start"
     }
   ],
-  "description": "A general dark mode extension for your college portal, LMS, Wikipedia, Reddit, GitHub, Stack Overflow, Medium, Hacker News and MDN. Proper per-element dark theme, no global invert.",
+  "description": "Dark mode for your college portal, LMS, Wikipedia, Reddit, GitHub and more.",
   "host_permissions": [
     "*://*.kristujayanti.edu.in/*",
     "*://kristujayanti.edu.in/*",
@@ -56,5 +56,5 @@
   "permissions": [
     "storage"
   ],
-  "version": "1.4.5"
+  "version": "1.4.6"
 }
