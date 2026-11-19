@@ -115,6 +115,45 @@ html.kju-dark-dim, html.kju-dark-dim body {
   background: #1a1a1a !important;
 }
 
+/* Moodle (KJU LMS at kristujayantiexamlms.com) - login page is a pale
+   blue-grey page with a centred white login card, a banner image on
+   top, dark blue heading, blue links and a solid blue Log in button.
+   No top navbar or footer on login. These rules darken the card and
+   the page background, keep the banner image original, and keep the
+   blue button readable. Standard Moodle / Bootstrap classes used
+   here, no class names were invented from the login inspection. */
+html.kju-dark #page, html.kju-dark .page, html.kju-dark #region-main,
+html.kju-dark-oled #page, html.kju-dark-oled .page, html.kju-dark-oled #region-main,
+html.kju-dark-dim #page, html.kju-dark-dim .page, html.kju-dark-dim #region-main {
+  background: #101216 !important;
+  color: #e8e4dc !important;
+}
+
+html.kju-dark .card, html.kju-dark .loginform, html.kju-dark .login-container,
+html.kju-dark-oled .card, html.kju-dark-oled .loginform, html.kju-dark-oled .login-container,
+html.kju-dark-dim .card, html.kju-dark-dim .loginform, html.kju-dark-dim .login-container {
+  background: #1b1e24 !important;
+  border-color: #2c313a !important;
+  color: #e8e4dc !important;
+}
+
+html.kju-dark .btn-primary, html.kju-dark-oled .btn-primary, html.kju-dark-dim .btn-primary {
+  background: #2b5cb8 !important;
+  border-color: #2b5cb8 !important;
+  color: #ffffff !important;
+}
+
+html.kju-dark .form-control, html.kju-dark-oled .form-control, html.kju-dark-dim .form-control {
+  background: #1e2228 !important;
+  color: #f0f0f0 !important;
+  border-color: #3a4048 !important;
+}
+
+html.kju-dark .navbar, html.kju-dark-oled .navbar, html.kju-dark-dim .navbar {
+  background: #14171c !important;
+  border-color: #2c313a !important;
+}
+
 /* Media: NEVER darkened, logos / photos / videos / PDFs stay original */
 html.kju-dark img, html.kju-dark video, html.kju-dark picture,
 html.kju-dark iframe, html.kju-dark embed, html.kju-dark object,

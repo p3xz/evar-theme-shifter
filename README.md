@@ -16,13 +16,15 @@ v2 darkens only light surfaces, element by element:
 - photos, logos, videos, PDFs and the already-dark left panel are
   left untouched
 
-Works on: all `*.kristujayanti.edu.in` pages, including
-- KJUsys: https://kjusys.kristujayanti.edu.in
-- KJLMS (Learning Management System, same domain family)
+Works on:
+- KJUsys: https://kjusys.kristujayanti.edu.in, all `*.kristujayanti.edu.in`
+- KJLMS (Moodle, separate site): https://www.kristujayantiexamlms.com/login/index.php, all `*.kristujayantiexamlms.com`
 - kjusys-apps.kristujayanti.edu.in
 
-LMS exact link is still unconfirmed, so LMS coverage rests on the
-shared domain. Send the LMS link to confirm its layout.
+KJUsys and LMS are separate sites. LMS is Moodle, theme_klass:
+pale blue-grey page, centred white login card, KJU banner on top,
+blue Log in button, Google sign-in. v1.2.0 adds the LMS domain and
+Moodle-specific card, button, input and navbar rules.
 
 ## What it does
 - Turns the white LMS / KJUsys pages dark, without inverting photos, videos, PDFs or embedded content.
