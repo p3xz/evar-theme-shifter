@@ -1,27 +1,32 @@
 const enabledEl = document.getElementById('enabled');
-const themeEl = document.getElementById('theme');
 const brightnessEl = document.getElementById('brightness');
 const brightnessVal = document.getElementById('brightnessVal');
+const swatches = Array.from(document.querySelectorAll('.swatch'));
+let theme = 'dark';
 
 function save() {
-  brightnessVal.textContent = brightnessEl.value + '%';
   chrome.storage.sync.set({
     enabled: enabledEl.checked,
-    theme: themeEl.value,
+    theme,
     brightness: Number(brightnessEl.value)
   });
 }
 
+function paint() {
+  brightnessVal.textContent = brightnessEl.value + '%';
+  swatches.forEach((s) => s.classList.toggle('active', s.dataset.theme === theme));
+}
+
 chrome.storage.sync.get(
   { enabled: true, theme: 'dark', brightness: 100 },
-  (s) => {
-    enabledEl.checked = s.enabled !== false;
-    themeEl.value = s.theme || 'dark';
-    brightnessEl.value = s.brightness ?? 100;
-    brightnessVal.textContent = brightnessEl.value + '%';
+  (settings) => {
+    enabledEl.checked = settings.enabled;
+    theme = settings.theme || 'dark';
+    brightnessEl.value = settings.brightness;
+    paint();
   }
 );
 
 enabledEl.addEventListener('change', save);
-themeEl.addEventListener('change', save);
-brightnessEl.addEventListener('input', save);
+brightnessEl.addEventListener('input', () => { paint(); save(); });
+swatches.forEach((s) => s.addEventListener('click', () => { theme = s.dataset.theme; paint(); save(); }));

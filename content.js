@@ -1,11 +1,11 @@
-// EvarTheme Shifter v2 - proper dark theme for college portal and college LMS
-// No global invert. college portal login is a split screen: left panel is
-// already dark navy, right panel is white. Inverting the whole page
-// would flip the dark panel light. So v2 does two things:
-//  1. dark.css handles known elements (body, text, links, inputs, tables)
-//  2. this script fixes inline / computed white backgrounds at runtime,
-//     which is needed because college portal is an Angular SPA and its class
-//     names are not stable or inspectable from outside.
+// EvarTheme Shifter v1.4 - proper dark theme
+// Root-cause fix: no global text colour override. Every element is
+// fixed by its OWN background, measured at runtime:
+//  - large light surface (page, card, panel, strip) -> dark background, light text
+//  - small light surface (pill, badge, button, chip) -> keep light background, dark text
+//  - dark surface -> light text
+// That fixes light-on-light pills like the date picker, Slot Close
+// badge, DSC pill, Active pill, and dark-on-dark icons and logos.
 
 const THEMES = {
   dark: 'evar-dark',
@@ -23,17 +23,34 @@ let currentSettings = { enabled: true, theme: 'dark', brightness: 100 };
 let scheduled = false;
 
 function parseRgb(color) {
-  const m = color && color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+  const m = color && color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
   if (!m) return null;
+  if (m[4] !== undefined && Number(m[4]) === 0) return null;
   return [Number(m[1]), Number(m[2]), Number(m[3])];
 }
 
-function isNearWhite(rgb) {
-  return rgb && rgb[0] > 235 && rgb[1] > 235 && rgb[2] > 235;
+function luminance(rgb) {
+  return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
 }
 
-function isNearBlack(rgb) {
-  return rgb && rgb[0] < 70 && rgb[1] < 70 && rgb[2] < 70;
+function effectiveBg(el) {
+  let node = el;
+  while (node && node !== document.documentElement) {
+    try {
+      const rgb = parseRgb(getComputedStyle(node).backgroundColor);
+      if (rgb) return rgb;
+    } catch (e) { /* ignore */ }
+    node = node.parentElement;
+  }
+  return [16, 18, 22];
+}
+
+function isSmall(el) {
+  const tag = el.tagName;
+  if (tag === 'BUTTON' || tag === 'A' || tag === 'SPAN' || tag === 'SMALL' || tag === 'LABEL') return true;
+  const cls = (el.className && typeof el.className === 'string') ? el.className.toLowerCase() : '';
+  return cls.includes('pill') || cls.includes('badge') || cls.includes('chip') ||
+    cls.includes('status') || cls.includes('tag') || cls.includes('btn');
 }
 
 function fixColors() {
@@ -46,16 +63,35 @@ function fixColors() {
     if (el.closest('img, video, picture, iframe, svg, canvas')) continue;
     try {
       const cs = getComputedStyle(el);
+      // Do not cover background images, course card images stay original
+      if (cs.backgroundImage && cs.backgroundImage !== 'none') continue;
       const bgRgb = parseRgb(cs.backgroundColor);
-      if (bgRgb && isNearWhite(bgRgb)) {
-        el.style.backgroundColor = bg;
-      }
+      const effRgb = bgRgb || effectiveBg(el);
+      const lum = luminance(effRgb);
       const textRgb = parseRgb(cs.color);
-      if (textRgb && isNearBlack(textRgb)) {
-        el.style.color = '#e8e4dc';
+      if (bgRgb && lum > 190) {
+        if (isSmall(el)) {
+          // Light pill / badge / button: keep the light background, dark text
+          el.style.color = '#111111';
+        } else {
+          // Large light surface: darken it, light text
+          el.style.backgroundColor = bg;
+          el.style.color = '#e8e4dc';
+        }
+      } else if (lum < 90) {
+        // Dark surface: light text, unless this is a small light-text element already
+        if (textRgb && luminance(textRgb) < 70) {
+          el.style.color = '#e8e4dc';
+        }
+      } else if (lum >= 90 && lum <= 190) {
+        // Mid-tone strip, e.g. pale blue LMS strip: darken large surfaces
+        if (!isSmall(el)) {
+          el.style.backgroundColor = bg;
+          el.style.color = '#e8e4dc';
+        }
       }
       const borderRgb = parseRgb(cs.borderColor);
-      if (borderRgb && isNearWhite(borderRgb)) {
+      if (borderRgb && luminance(borderRgb) > 200) {
         el.style.borderColor = '#2c313a';
       }
     } catch (e) {
@@ -81,10 +117,6 @@ function applySettings(settings) {
   if (settings.enabled === false) return;
   const theme = THEMES[settings.theme] || THEMES.dark;
   root.classList.add(theme);
-  const brightness = (settings.brightness ?? 100) / 100;
-  root.style.setProperty('--evar-brightness', String(brightness));
-  // Brightness is applied via the theme class filter only in invert
-  // fallback mode, not in proper mode, so the page never washes out.
   scheduleFix();
 }
 
@@ -101,7 +133,8 @@ chrome.storage.onChanged.addListener((changes, area) => {
   if (area === 'sync') load();
 });
 
-// college portal is an Angular SPA: routes and content change without a reload.
+// Portal and LMS are single page apps: routes and content change
+// without a reload, so watch for changes and re-fix.
 const observer = new MutationObserver(() => {
   scheduleFix();
 });
@@ -114,6 +147,5 @@ if (document.documentElement) {
   });
 }
 
-// Re-check after lazy content loads
 setTimeout(scheduleFix, 500);
 setTimeout(scheduleFix, 1500);

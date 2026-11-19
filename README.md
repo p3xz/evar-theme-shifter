@@ -49,3 +49,9 @@ Study only. An exam proctor can flag injected extensions.
 - `content.js` - applies theme, fixes white backgrounds at runtime, watches route changes
 - `dark.css` - proper per-element dark theme, media untouched
 - `popup.html` / `popup.js` - toggle, theme, brightness
+
+## v1.4.0
+- Root-cause fix: no global text colour override. Text is fixed per element by its own background, light pills keep dark text, dark surfaces get light text.
+- Fixes: date picker pill, Slot Close badge, DSC and Active pills, LMS light strip, left white card, Library OPAC table, dropdown open state, New event / Export buttons, course card images, completion tick boxes, today highlight, sidebar SVG icons, logos, empty-state illustrations, scrollbars, first-paint.
+- Generic sites added: Wikipedia, Reddit, GitHub, Stack Overflow, Medium, Hacker News, MDN.
+- New popup UI: 300px card, big switch, theme swatches with preview, brightness slider.

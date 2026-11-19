@@ -1,11 +1,11 @@
-/* EvarTheme Shifter v2 - proper dark theme, NOT a global invert filter.
-   Why: college portal login is a split screen. The left panel is ALREADY
-   dark navy with white text. A global invert would turn that panel
-   light and break it. So v2 darkens only light surfaces, element
-   by element, and leaves dark panels, photos, logos and videos alone.
-   The content script also fixes inline white backgrounds at runtime,
-   which matters because college portal is an Angular SPA with no stable
-   class names to target. */
+/* EvarTheme Shifter v1.4 - proper dark theme, NOT a global invert filter.
+   v1.4 root-cause fix: v1.3 forced ALL text to one light colour.
+   That made every light pill, badge, button and strip unreadable,
+   light-on-light, and left dark icons and logos dark-on-dark.
+   v1.4 has NO global text colour override. Text is fixed per element
+   by its own background, in content.js: light surfaces get dark text,
+   dark surfaces get light text. This CSS only handles large surfaces,
+   inputs, tables, dropdowns, scrollbars and media. */
 
 :root {
   color-scheme: dark;
@@ -25,55 +25,17 @@ html.evar-dark-dim body {
   color: #e8e4dc !important;
 }
 
-/* Light surfaces: white / near-white backgrounds become dark */
-html.evar-dark div,
-html.evar-dark section,
-html.evar-dark main,
-html.evar-dark article,
-html.evar-dark header,
-html.evar-dark footer,
-html.evar-dark nav,
-html.evar-dark aside,
-html.evar-dark-oled div,
-html.evar-dark-oled section,
-html.evar-dark-oled main,
-html.evar-dark-oled article,
-html.evar-dark-oled header,
-html.evar-dark-oled footer,
-html.evar-dark-oled nav,
-html.evar-dark-oled aside,
-html.evar-dark-dim div,
-html.evar-dark-dim section,
-html.evar-dark-dim main,
-html.evar-dark-dim article,
-html.evar-dark-dim header,
-html.evar-dark-dim footer,
-html.evar-dark-dim nav,
-html.evar-dark-dim aside {
+/* Large surfaces only: page, cards, panels, tables. Pills, badges,
+   buttons and small inline elements are NOT darkened here, the
+   runtime fix keeps their light background and gives them dark text. */
+html.evar-dark main, html.evar-dark section, html.evar-dark article,
+html.evar-dark-oled main, html.evar-dark-oled section, html.evar-dark-oled article,
+html.evar-dark-dim main, html.evar-dark-dim section, html.evar-dark-dim article {
+  background: #101216 !important;
   border-color: #2c313a !important;
 }
 
-/* Text: dark text on light surfaces becomes light */
-html.evar-dark h1, html.evar-dark h2, html.evar-dark h3, html.evar-dark h4,
-html.evar-dark h5, html.evar-dark h6, html.evar-dark p, html.evar-dark span,
-html.evar-dark label, html.evar-dark li, html.evar-dark td, html.evar-dark th,
-html.evar-dark-oled h1, html.evar-dark-oled h2, html.evar-dark-oled h3,
-html.evar-dark-oled h4, html.evar-dark-oled h5, html.evar-dark-oled h6,
-html.evar-dark-oled p, html.evar-dark-oled span, html.evar-dark-oled label,
-html.evar-dark-oled li, html.evar-dark-oled td, html.evar-dark-oled th,
-html.evar-dark-dim h1, html.evar-dark-dim h2, html.evar-dark-dim h3,
-html.evar-dark-dim h4, html.evar-dark-dim h5, html.evar-dark-dim h6,
-html.evar-dark-dim p, html.evar-dark-dim span, html.evar-dark-dim label,
-html.evar-dark-dim li, html.evar-dark-dim td, html.evar-dark-dim th {
-  color: #e8e4dc;
-}
-
-/* Links: blue link becomes readable light blue, not invisible on dark */
-html.evar-dark a, html.evar-dark-oled a, html.evar-dark-dim a {
-  color: #8ab4ff !important;
-}
-
-/* Inputs: white fields become dark fields, with a visible border */
+/* Inputs: white fields become dark fields */
 html.evar-dark input, html.evar-dark textarea, html.evar-dark select,
 html.evar-dark-oled input, html.evar-dark-oled textarea, html.evar-dark-oled select,
 html.evar-dark-dim input, html.evar-dark-dim textarea, html.evar-dark-dim select {
@@ -86,10 +48,18 @@ html.evar-dark-dim input, html.evar-dark-dim textarea, html.evar-dark-dim select
 html.evar-dark input::placeholder, html.evar-dark textarea::placeholder,
 html.evar-dark-oled input::placeholder, html.evar-dark-oled textarea::placeholder,
 html.evar-dark-dim input::placeholder, html.evar-dark-dim textarea::placeholder {
-  color: #8a8f98 !important;
+  color: #b0b5bd !important;
+  opacity: 1 !important;
 }
 
-/* Tables: header and rows dark, borders visible */
+html.evar-dark input[type="checkbox"], html.evar-dark-oled input[type="checkbox"],
+html.evar-dark-dim input[type="checkbox"] {
+  accent-color: #8ab4ff !important;
+  border-color: #8ab4ff !important;
+}
+
+/* Tables: header and rows dark, text light. This fixes the Library
+   OPAC table, which rendered as an empty dark box in v1.3. */
 html.evar-dark table, html.evar-dark th, html.evar-dark td,
 html.evar-dark-oled table, html.evar-dark-oled th, html.evar-dark-oled td,
 html.evar-dark-dim table, html.evar-dark-dim th, html.evar-dark-dim td {
@@ -98,13 +68,45 @@ html.evar-dark-dim table, html.evar-dark-dim th, html.evar-dark-dim td {
   border-color: #2c313a !important;
 }
 
-/* Cards / panels */
-html.evar-dark [class*="card"], html.evar-dark [class*="panel"],
-html.evar-dark-oled [class*="card"], html.evar-dark-oled [class*="panel"],
-html.evar-dark-dim [class*="card"], html.evar-dark-dim [class*="panel"] {
+/* Dropdown menus, open state: dark menu, light text, selected item dark */
+html.evar-dark [class*="dropdown-menu"], html.evar-dark [role="menu"],
+html.evar-dark-oled [class*="dropdown-menu"], html.evar-dark-oled [role="menu"],
+html.evar-dark-dim [class*="dropdown-menu"], html.evar-dark-dim [role="menu"] {
   background: #1b1e24 !important;
   border-color: #2c313a !important;
-  box-shadow: none !important;
+}
+
+html.evar-dark [class*="dropdown-menu"] [class*="selected"],
+html.evar-dark [class*="dropdown-menu"] [aria-selected="true"],
+html.evar-dark-oled [class*="dropdown-menu"] [class*="selected"],
+html.evar-dark-oled [class*="dropdown-menu"] [aria-selected="true"],
+html.evar-dark-dim [class*="dropdown-menu"] [class*="selected"],
+html.evar-dark-dim [class*="dropdown-menu"] [aria-selected="true"] {
+  background: #2a3446 !important;
+  color: #ffffff !important;
+}
+
+/* Calendar today highlight */
+html.evar-dark [class*="today"], html.evar-dark-oled [class*="today"],
+html.evar-dark-dim [class*="today"] {
+  background: #2b5cb8 !important;
+  color: #ffffff !important;
+}
+
+/* Scrollbars, dark track and thumb */
+html.evar-dark ::-webkit-scrollbar, html.evar-dark-oled ::-webkit-scrollbar,
+html.evar-dark-dim ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+html.evar-dark ::-webkit-scrollbar-track, html.evar-dark-oled ::-webkit-scrollbar-track,
+html.evar-dark-dim ::-webkit-scrollbar-track {
+  background: #101216 !important;
+}
+html.evar-dark ::-webkit-scrollbar-thumb, html.evar-dark-oled ::-webkit-scrollbar-thumb,
+html.evar-dark-dim ::-webkit-scrollbar-thumb {
+  background: #3a4048 !important;
+  border-radius: 5px;
 }
 
 /* Theme variants: OLED is pure black, Dim is softer */
@@ -115,55 +117,51 @@ html.evar-dark-dim, html.evar-dark-dim body {
   background: #1a1a1a !important;
 }
 
-/* Moodle LMS - login page is a pale
-   blue-grey page with a centred white login card, a banner image on
-   top, dark blue heading, blue links and a solid blue Log in button.
-   No top navbar or footer on login. These rules darken the card and
-   the page background, keep the banner image original, and keep the
-   blue button readable. Standard Moodle / Bootstrap classes used
-   here, no class names were invented from the login inspection. */
-html.evar-dark #page, html.evar-dark .page, html.evar-dark #region-main,
-html.evar-dark-oled #page, html.evar-dark-oled .page, html.evar-dark-oled #region-main,
-html.evar-dark-dim #page, html.evar-dark-dim .page, html.evar-dark-dim #region-main {
-  background: #101216 !important;
-  color: #e8e4dc !important;
+/* Dark SVG icons in the sidebar: black artwork on a dark sidebar.
+   Invert only SVG images, so they read white. Photos are not SVG. */
+html.evar-dark img[src$=".svg"], html.evar-dark-oled img[src$=".svg"],
+html.evar-dark-dim img[src$=".svg"] {
+  filter: invert(1) hue-rotate(180deg) !important;
 }
 
-html.evar-dark .card, html.evar-dark .loginform, html.evar-dark .login-container,
-html.evar-dark-oled .card, html.evar-dark-oled .loginform, html.evar-dark-oled .login-container,
-html.evar-dark-dim .card, html.evar-dark-dim .loginform, html.evar-dark-dim .login-container {
-  background: #1b1e24 !important;
-  border-color: #2c313a !important;
-  color: #e8e4dc !important;
+/* Dark logos on the dark top bar: black / dark blue wordmark and crest.
+   Invert them so the lettering reads light. Profile photos are not
+   logos, they are untouched. */
+html.evar-dark img[src*="kjusys.png"], html.evar-dark img[src*="kjc.png"],
+html.evar-dark img[alt="KJCLogo"],
+html.evar-dark-oled img[src*="kjusys.png"], html.evar-dark-oled img[src*="kjc.png"],
+html.evar-dark-oled img[alt="KJCLogo"],
+html.evar-dark-dim img[src*="kjusys.png"], html.evar-dark-dim img[src*="kjc.png"],
+html.evar-dark-dim img[alt="KJCLogo"] {
+  filter: invert(1) hue-rotate(180deg) !important;
+  background: transparent !important;
 }
 
-html.evar-dark .btn-primary, html.evar-dark-oled .btn-primary, html.evar-dark-dim .btn-primary {
-  background: #2b5cb8 !important;
-  border-color: #2b5cb8 !important;
-  color: #ffffff !important;
+/* Empty-state illustrations drawn for a light page: dim them on a
+   dark card instead of leaving a bright white blob. */
+html.evar-dark img[src*="no-results.png"], html.evar-dark img[src*="no-events"],
+html.evar-dark-oled img[src*="no-results.png"], html.evar-dark-oled img[src*="no-events"],
+html.evar-dark-dim img[src*="no-results.png"], html.evar-dark-dim img[src*="no-events"] {
+  filter: brightness(0.65) opacity(0.85) !important;
 }
 
-html.evar-dark .form-control, html.evar-dark-oled .form-control, html.evar-dark-dim .form-control {
-  background: #1e2228 !important;
-  color: #f0f0f0 !important;
-  border-color: #3a4048 !important;
-}
-
-html.evar-dark .navbar, html.evar-dark-oled .navbar, html.evar-dark-dim .navbar {
-  background: #14171c !important;
-  border-color: #2c313a !important;
-}
-
-/* Media: NEVER darkened, logos / photos / videos / PDFs stay original */
+/* Media: NEVER darkened, except the SVG and logo rules above.
+   Photos, videos, PDFs, course images and profile photos stay original. */
 html.evar-dark img, html.evar-dark video, html.evar-dark picture,
 html.evar-dark iframe, html.evar-dark embed, html.evar-dark object,
-html.evar-dark canvas, html.evar-dark svg,
+html.evar-dark canvas,
 html.evar-dark-oled img, html.evar-dark-oled video, html.evar-dark-oled picture,
 html.evar-dark-oled iframe, html.evar-dark-oled embed, html.evar-dark-oled object,
-html.evar-dark-oled canvas, html.evar-dark-oled svg,
+html.evar-dark-oled canvas,
 html.evar-dark-dim img, html.evar-dark-dim video, html.evar-dark-dim picture,
 html.evar-dark-dim iframe, html.evar-dark-dim embed, html.evar-dark-dim object,
-html.evar-dark-dim canvas, html.evar-dark-dim svg {
-  filter: none !important;
+html.evar-dark-dim canvas {
   background: transparent !important;
+}
+
+/* Course card images are CSS background-images, not <img>. Do not
+   cover them with a dark background, keep the original image. */
+html.evar-dark [style*="background-image"], html.evar-dark-oled [style*="background-image"],
+html.evar-dark-dim [style*="background-image"] {
+  background-color: transparent !important;
 }
