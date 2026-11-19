@@ -170,24 +170,29 @@ html.evar-dark-dim [class*="sidebar"] svg path {
   stroke: #e8e4dc !important;
 }
 
-/* Dark SVG icons in the sidebar: black artwork on a dark sidebar.
-   Invert only SVG images, so they read white. Photos are not SVG. */
+/* NO invert anywhere in this extension. Invert flips every colour
+   and ruins icons and logos, that is not a genuine dark mode.
+   Monochrome black SVG icons: turn them white cleanly with
+   brightness(0) invert(1), no hue shift, so black becomes white
+   and nothing else changes colour. */
 html.evar-dark img[src$=".svg"], html.evar-dark-oled img[src$=".svg"],
 html.evar-dark-dim img[src$=".svg"] {
-  filter: invert(1) hue-rotate(180deg) !important;
+  filter: brightness(0) invert(1) !important;
 }
 
-/* Dark logos on the dark top bar: black / dark blue wordmark and crest.
-   Invert them so the lettering reads light. Profile photos are not
-   logos, they are untouched. */
+/* Logos on the dark top bar: NEVER inverted, NEVER recoloured.
+   A logo stays exactly as it is, on a light backing tile, the way
+   a genuine dark mode does it. Profile photos are untouched. */
 html.evar-dark img[src*="kjusys.png"], html.evar-dark img[src*="kjc.png"],
 html.evar-dark img[alt="KJCLogo"],
 html.evar-dark-oled img[src*="kjusys.png"], html.evar-dark-oled img[src*="kjc.png"],
 html.evar-dark-oled img[alt="KJCLogo"],
 html.evar-dark-dim img[src*="kjusys.png"], html.evar-dark-dim img[src*="kjc.png"],
 html.evar-dark-dim img[alt="KJCLogo"] {
-  filter: invert(1) hue-rotate(180deg) !important;
-  background: transparent !important;
+  filter: none !important;
+  background: #f0f0f0 !important;
+  border-radius: 6px !important;
+  padding: 2px 6px !important;
 }
 
 /* Empty-state illustrations drawn for a light page: dim them on a
@@ -217,4 +222,19 @@ html.evar-dark-dim canvas {
 html.evar-dark [style*="background-image"], html.evar-dark-oled [style*="background-image"],
 html.evar-dark-dim [style*="background-image"] {
   background-color: transparent !important;
+}
+
+/* Logo tile, repeated last on purpose: the generic media rule above
+   sets every img background to transparent, this rule must win for
+   logos so the original logo sits on a light tile. */
+html.evar-dark img[src*="kjusys.png"], html.evar-dark img[src*="kjc.png"],
+html.evar-dark img[alt="KJCLogo"],
+html.evar-dark-oled img[src*="kjusys.png"], html.evar-dark-oled img[src*="kjc.png"],
+html.evar-dark-oled img[alt="KJCLogo"],
+html.evar-dark-dim img[src*="kjusys.png"], html.evar-dark-dim img[src*="kjc.png"],
+html.evar-dark-dim img[alt="KJCLogo"] {
+  filter: none !important;
+  background: #f0f0f0 !important;
+  border-radius: 6px !important;
+  padding: 2px 6px !important;
 }
