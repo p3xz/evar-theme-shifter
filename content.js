@@ -99,6 +99,12 @@ function fixColors() {
           el.style.color = '#e8e4dc';
         }
       }
+      // v1.4.3 fix: Moodle dims restricted activities with opacity,
+      // which washes the whole box grey with faint text. Restore it.
+      const cls = (el.className && typeof el.className === 'string') ? el.className.toLowerCase() : '';
+      if ((cls.includes('dimmed') || cls.includes('restricted')) && Number(cs.opacity) < 1) {
+        el.style.opacity = '1';
+      }
       const borderRgb = parseRgb(cs.borderColor);
       if (borderRgb && luminance(borderRgb) > 200) {
         el.style.borderColor = '#2c313a';

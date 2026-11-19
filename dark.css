@@ -108,6 +108,23 @@ html.evar-dark-dim [class*="dropdown-menu"] [aria-selected="true"] {
   color: #ffffff !important;
 }
 
+/* Restricted activities: Moodle dims them on purpose with opacity
+   and a grey background, so the whole box turns into a washed-out
+   grey rectangle with faint text. Force full opacity and a dark box. */
+html.evar-dark [class*="dimmed"], html.evar-dark [class*="restricted"],
+html.evar-dark-oled [class*="dimmed"], html.evar-dark-oled [class*="restricted"],
+html.evar-dark-dim [class*="dimmed"], html.evar-dark-dim [class*="restricted"] {
+  opacity: 1 !important;
+  background: #171a1f !important;
+  color: #e8e4dc !important;
+}
+html.evar-dark [class*="activity"], html.evar-dark [class*="description"],
+html.evar-dark-oled [class*="activity"], html.evar-dark-oled [class*="description"],
+html.evar-dark-dim [class*="activity"], html.evar-dark-dim [class*="description"] {
+  background: #171a1f !important;
+  color: #e8e4dc !important;
+}
+
 /* Calendar today highlight */
 html.evar-dark [class*="today"], html.evar-dark-oled [class*="today"],
 html.evar-dark-dim [class*="today"] {
